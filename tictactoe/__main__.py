@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from enum import Enum
+import enum
 import math
 
 import gi
@@ -24,18 +24,18 @@ GRID_OFFSET_X = 5
 GRID_OFFSET_Y = 5
 
 
-class Cell(Enum):
+class Cell(enum.Enum):
     EMPTY = " "
     X = "X"
     O = "O"
 
 
-class Player(Enum):
+class Player(enum.Enum):
     X = "X"
     O = "O"
 
 
-class GameStatus(Enum):
+class GameStatus(enum.Enum):
     ACTIVE = 0
     GAME_OVER = 1
 
