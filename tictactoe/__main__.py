@@ -18,7 +18,9 @@ MENU_DESCRIPTION = """
 </ui>
 """
 
-CELL_WIDTH = 100
+CELL_SIZE = 100
+GRID_OFFSET_X = 5
+GRID_OFFSET_Y = 5
 
 
 class Cell(Enum):
@@ -45,8 +47,8 @@ class TicTacToeWindow(Gtk.Window):
 
     def __init__(self, game_state):
         super().__init__(title="Tic-tac-toe")
-        self.set_default_size(CELL_WIDTH * game_state.width + 20,
-                              CELL_WIDTH * game_state.height + 40)
+        self.set_default_size(CELL_SIZE * game_state.width + 20,
+                              CELL_SIZE * game_state.height + 40)
 
         self.game_state = game_state
 
@@ -86,17 +88,17 @@ class TicTacToeWindow(Gtk.Window):
         for y in range(self.game_state.height):
             for x in range(self.game_state.width):
                 cell = self.game_state.grid[y][x]
-                rx = 5 + CELL_WIDTH * x
-                ry = 5 + CELL_WIDTH * y
-                cx.rectangle(rx, ry, CELL_WIDTH, CELL_WIDTH)
+                rx = GRID_OFFSET_X + CELL_SIZE * x
+                ry = GRID_OFFSET_Y + CELL_SIZE * y
+                cx.rectangle(rx, ry, CELL_SIZE, CELL_SIZE)
                 if cell == Cell.O:
-                    cx.move_to(rx + CELL_WIDTH - 10, ry + CELL_WIDTH / 2)
-                    cx.arc(rx + 50, ry + 50, 40, 0, math.pi * 2)
+                    cx.move_to(rx + CELL_SIZE - CELL_SIZE * 0.1, ry + CELL_SIZE / 2)
+                    cx.arc(rx + CELL_SIZE / 2, ry + CELL_SIZE / 2, CELL_SIZE * 0.4, 0, math.pi * 2)
                 elif cell == Cell.X:
-                    cx.move_to(rx + 20, ry + 20)
-                    cx.rel_line_to(60, 60)
-                    cx.move_to(rx + 80, ry + 20)
-                    cx.rel_line_to(-60, 60)
+                    cx.move_to(rx + CELL_SIZE * 0.2, ry + CELL_SIZE * 0.2)
+                    cx.rel_line_to(CELL_SIZE * 0.6, CELL_SIZE * 0.6)
+                    cx.move_to(rx + CELL_SIZE * 0.8, ry + CELL_SIZE * 0.2)
+                    cx.rel_line_to(-1 * CELL_SIZE * 0.6, CELL_SIZE * 0.6)
         cx.stroke()
 
     def on_menu_file_quit(self, widget):
