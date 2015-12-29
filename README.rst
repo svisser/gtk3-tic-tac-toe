@@ -1,7 +1,7 @@
 Tic Tac Toe using GTK 3, Mac OS X and Python 3.5
 ================================================
 
-Example implementation of Tic Tac Toe using GTK+ 3, Mac OS X 10.9.5 and Python 3.5.
+Example implementation of Tic Tac Toe using GTK+ 3, Mac OS X and Python 3.5.
 
 Installation
 ------------
