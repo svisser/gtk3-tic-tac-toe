@@ -47,6 +47,8 @@ class GameState(object):
         self.height = height
         self.current_player = Player.X
         self.status = GameStatus.ACTIVE
+        self.winning_player = None
+        self.winning_cells = None
         self.grid = [[Cell.EMPTY for _ in range(width)] for _ in range(height)]
 
     def place_symbol(self, gx, gy):
@@ -54,10 +56,11 @@ class GameState(object):
             Player.X: Cell.X,
             Player.O: Cell.O,
         }[self.current_player]
-        winner = self.calculate_winner()
+        winner, cells = self.calculate_winner()
         if winner is not None:
             self.status = GameStatus.GAME_OVER
-            return winner
+            self.winning_player = winner
+            self.winning_cells = cells
         self.change_player()
 
     def change_player(self):
@@ -66,23 +69,24 @@ class GameState(object):
             Player.O: Player.X,
         }[self.current_player]
 
+    def calculate_possibilities(self):
+        for x in range(self.width):
+            yield frozenset((x, y) for y in range(self.height))
+        for y in range(self.height):
+            yield frozenset((x, y) for x in range(self.width))
+        yield frozenset((k, k) for k in range(self.width))
+        yield frozenset((k, self.width - 1 - k) for k in range(self.width))
+
     def calculate_winner(self):
         checks = (
             (Player.X, Cell.X),
             (Player.O, Cell.O),
         )
         for player, symbol in checks:
-            for x in range(self.width):
-                if all(self.grid[y][x] == symbol for y in range(self.height)):
-                    return player
-            for y in range(self.height):
-                if all(self.grid[y][x] == symbol for x in range(self.width)):
-                    return player
-            if all(self.grid[k][k] == symbol for k in range(self.width)):
-                return player
-            if all(self.grid[k][self.width - 1 - k] == symbol for k in range(self.width)):
-                return player
-
+            for cells in self.calculate_possibilities():
+                if all(self.grid[cy][cx] == symbol for cx, cy in cells):
+                    return player, cells
+        return None, None
 
 
 class TicTacToeWindow(Gtk.Window):
@@ -128,13 +132,21 @@ class TicTacToeWindow(Gtk.Window):
 
     def on_drawing_area_draw(self, widget, cx):
         cx.set_line_width(5)
-        cx.set_source_rgb(0, 0, 0)
         for y in range(self.game_state.height):
             for x in range(self.game_state.width):
+                cx.set_source_rgb(0, 0, 0)
                 cell = self.game_state.grid[y][x]
+
                 rx = GRID_OFFSET_X + CELL_SIZE * x
                 ry = GRID_OFFSET_Y + CELL_SIZE * y
                 cx.rectangle(rx, ry, CELL_SIZE, CELL_SIZE)
+                cx.stroke()
+
+                if self.game_state.winning_cells and (x, y) in self.game_state.winning_cells:
+                    cx.set_source_rgb(1, 0, 0)
+                else:
+                    cx.set_source_rgb(0, 0, 0)
+
                 if cell == Cell.O:
                     cx.move_to(rx + CELL_SIZE - CELL_SIZE * 0.1, ry + CELL_SIZE / 2)
                     cx.arc(rx + CELL_SIZE / 2, ry + CELL_SIZE / 2, CELL_SIZE * 0.4, 0, math.pi * 2)
@@ -143,7 +155,7 @@ class TicTacToeWindow(Gtk.Window):
                     cx.rel_line_to(CELL_SIZE * 0.6, CELL_SIZE * 0.6)
                     cx.move_to(rx + CELL_SIZE * 0.8, ry + CELL_SIZE * 0.2)
                     cx.rel_line_to(-1 * CELL_SIZE * 0.6, CELL_SIZE * 0.6)
-        cx.stroke()
+                cx.stroke()
 
     def get_grid_coordinates(self, rx, ry):
         gx = math.floor((rx - GRID_OFFSET_X) / CELL_SIZE)
