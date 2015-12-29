@@ -176,9 +176,7 @@ class TicTacToeWindow(Gtk.Window):
         Gtk.main_quit()
 
 
-game_state = GameState(3, 3)
-
-win = TicTacToeWindow(game_state)
+win = TicTacToeWindow(GameState(3, 3))
 win.connect("delete-event", Gtk.main_quit)
 win.show_all()
 Gtk.main()
