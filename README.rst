@@ -25,7 +25,9 @@ Install XQuartz from http://www.xquartz.org to run X.Org X Window System on Mac 
 How to run
 ----------
 
-Start XQuartz.
+You need to make sure XQuartz is running.
+
+You can then start the application using:
 
 .. code-block:: bash
 
