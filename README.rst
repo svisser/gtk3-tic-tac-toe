@@ -16,7 +16,9 @@ Specify the Python 3.5 interpreter for which you have installed the above depend
 
 .. code-block:: bash
 
-    $ mkvirtualenv gtk3-tic-tac-toe --python=/opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/python3.5 --system-site-packages
+    $ mkvirtualenv gtk3-tic-tac-toe \
+        --python=/opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/python3.5 \
+        --system-site-packages
 
 Install XQuartz from http://www.xquartz.org to run X.Org X Window System on Mac OS X.
 
