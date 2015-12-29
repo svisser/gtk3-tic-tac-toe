@@ -4,8 +4,9 @@ from enum import Enum
 import math
 
 import gi
+gi.require_version("Gdk", "3.0")
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 
 
 MENU_DESCRIPTION = """
@@ -34,13 +35,54 @@ class Player(Enum):
     O = "O"
 
 
+class GameStatus(Enum):
+    ACTIVE = 0
+    GAME_OVER = 1
+
+
 class GameState(object):
 
     def __init__(self, width, height):
         self.width = width
         self.height = height
         self.current_player = Player.X
+        self.status = GameStatus.ACTIVE
         self.grid = [[Cell.EMPTY for _ in range(width)] for _ in range(height)]
+
+    def place_symbol(self, gx, gy):
+        self.grid[gy][gx] = {
+            Player.X: Cell.X,
+            Player.O: Cell.O,
+        }[self.current_player]
+        winner = self.calculate_winner()
+        if winner is not None:
+            self.status = GameStatus.GAME_OVER
+            return winner
+        self.change_player()
+
+    def change_player(self):
+        self.current_player = {
+            Player.X: Player.O,
+            Player.O: Player.X,
+        }[self.current_player]
+
+    def calculate_winner(self):
+        checks = (
+            (Player.X, Cell.X),
+            (Player.O, Cell.O),
+        )
+        for player, symbol in checks:
+            for x in range(self.width):
+                if all(self.grid[y][x] == symbol for y in range(self.height)):
+                    return player
+            for y in range(self.height):
+                if all(self.grid[y][x] == symbol for x in range(self.width)):
+                    return player
+            if all(self.grid[k][k] == symbol for k in range(self.width)):
+                return player
+            if all(self.grid[k][self.width - 1 - k] == symbol for k in range(self.width)):
+                return player
+
 
 
 class TicTacToeWindow(Gtk.Window):
@@ -61,11 +103,11 @@ class TicTacToeWindow(Gtk.Window):
         uimanager.insert_action_group(action_group)
 
         menubar = uimanager.get_widget("/MenuBar")
-        drawing_area = self.get_drawing_area()
+        self.drawing_area = self.get_drawing_area()
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         box.pack_start(menubar, False, False, 0)
-        box.pack_start(drawing_area, True, True, 0)
+        box.pack_start(self.drawing_area, True, True, 0)
 
         self.add(box)
 
@@ -80,6 +122,8 @@ class TicTacToeWindow(Gtk.Window):
     def get_drawing_area(self):
         drawing_area = Gtk.DrawingArea()
         drawing_area.connect("draw", self.on_drawing_area_draw)
+        drawing_area.connect("button-press-event", self.on_drawing_area_button_press_event)
+        drawing_area.set_events(drawing_area.get_events() | Gdk.EventMask.BUTTON_PRESS_MASK)
         return drawing_area
 
     def on_drawing_area_draw(self, widget, cx):
@@ -100,6 +144,21 @@ class TicTacToeWindow(Gtk.Window):
                     cx.move_to(rx + CELL_SIZE * 0.8, ry + CELL_SIZE * 0.2)
                     cx.rel_line_to(-1 * CELL_SIZE * 0.6, CELL_SIZE * 0.6)
         cx.stroke()
+
+    def get_grid_coordinates(self, rx, ry):
+        gx = math.floor((rx - GRID_OFFSET_X) / CELL_SIZE)
+        gy = math.floor((ry - GRID_OFFSET_Y) / CELL_SIZE)
+        if 0 <= gx <= self.game_state.width and 0 <= gy <= self.game_state.height:
+            return gx, gy
+        return None, None
+
+    def on_drawing_area_button_press_event(self, widget, event):
+        if self.game_state.status == GameStatus.ACTIVE:
+            gx, gy = self.get_grid_coordinates(event.x, event.y)
+            if gx is not None and gy is not None:
+                self.game_state.place_symbol(gx, gy)
+                self.queue_draw()
+        return False
 
     def on_menu_file_quit(self, widget):
         Gtk.main_quit()
