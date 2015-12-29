@@ -155,7 +155,7 @@ class TicTacToeWindow(Gtk.Window):
     def on_drawing_area_button_press_event(self, widget, event):
         if self.game_state.status == GameStatus.ACTIVE:
             gx, gy = self.get_grid_coordinates(event.x, event.y)
-            if gx is not None and gy is not None:
+            if gx is not None and gy is not None and self.game_state.grid[gy][gx] == Cell.EMPTY:
                 self.game_state.place_symbol(gx, gy)
                 self.queue_draw()
         return False
