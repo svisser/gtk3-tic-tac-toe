@@ -47,7 +47,7 @@ When creating the virtualenv for this project you need to:
         --python=/opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/python3.5 \
         --system-site-packages
 
-Lastly, install `XQuartz <http://www.xquartz.org>`_ to run X.Org X Window System on Mac OS X.
+Lastly, install `XQuartz <http://www.xquartz.org>`_ to run X Window System on Mac OS X.
 
 How to run
 ----------
