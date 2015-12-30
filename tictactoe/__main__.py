@@ -142,10 +142,10 @@ class TicTacToeWindow(Gtk.Window):
                 cx.rectangle(rx, ry, CELL_SIZE, CELL_SIZE)
                 cx.stroke()
 
+                color = (0, 0, 0)
                 if self.game_state.winning_cells and (x, y) in self.game_state.winning_cells:
-                    cx.set_source_rgb(1, 0, 0)
-                else:
-                    cx.set_source_rgb(0, 0, 0)
+                    color = (1, 0, 0)
+                cx.set_source_rgb(*color)
 
                 if cell == Cell.O:
                     cx.move_to(rx + CELL_SIZE - CELL_SIZE * 0.1, ry + CELL_SIZE / 2)
