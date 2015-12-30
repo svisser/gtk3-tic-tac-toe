@@ -3,6 +3,13 @@ Tic Tac Toe using GTK 3, Mac OS X and Python 3.5
 
 Implementation of Tic Tac Toe using GTK+ 3, Mac OS X and Python 3.5.
 
+.. image:: static/screenshot.png
+   :height: 434px
+   :width: 352px
+   :scale: 100 %
+   :alt: Tic Tac Toe
+   :align: left
+
 Installation
 ------------
 
