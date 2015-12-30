@@ -13,7 +13,7 @@ Implementation of Tic Tac Toe using GTK+ 3, Mac OS X and Python 3.5.
 Installation
 ------------
 
-The installation steps below assume that you have installed Python 3.5 using MacPorts (https://www.macports.org):
+The installation steps below assume that you have installed Python 3.5 using `MacPorts <https://www.macports.org>`_:
 
 .. code-block:: bash
 
@@ -30,7 +30,7 @@ This installs `GTK+ 3 <https://developer.gnome.org/gtk3/>`_,
 and GObject bindings for Python 3.5.
 
 It is recommended that you create a virtualenv to install this Python project locally. This is
-easier when you have virtualenvwrapper installed (https://pypi.python.org/pypi/virtualenvwrapper/):
+easier when you have `virtualenvwrapper <https://pypi.python.org/pypi/virtualenvwrapper/>`_ installed:
 
 .. code-block:: bash
 
@@ -47,7 +47,7 @@ When creating the virtualenv for this project you need to:
         --python=/opt/local/Library/Frameworks/Python.framework/Versions/3.5/bin/python3.5 \
         --system-site-packages
 
-Lastly, install XQuartz (http://www.xquartz.org) to run X.Org X Window System on Mac OS X.
+Lastly, install `XQuartz <http://www.xquartz.org>`_ to run X.Org X Window System on Mac OS X.
 
 How to run
 ----------
