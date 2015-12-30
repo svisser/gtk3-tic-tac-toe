@@ -77,19 +77,17 @@ class TicTacToeWindow(Gtk.Window):
         cx.set_line_width(5)
         for y in range(self.game_state.height):
             for x in range(self.game_state.width):
-                cx.set_source_rgb(0, 0, 0)
-                cell = self.game_state.grid[y][x]
-
                 rx = GRID_OFFSET_X + CELL_SIZE * x
                 ry = GRID_OFFSET_Y + CELL_SIZE * y
+
+                cx.set_source_rgb(0, 0, 0)
                 cx.rectangle(rx, ry, CELL_SIZE, CELL_SIZE)
                 cx.stroke()
 
-                color = (0, 0, 0)
                 if self.game_state.winning_cells and (x, y) in self.game_state.winning_cells:
-                    color = (1, 0, 0)
-                cx.set_source_rgb(*color)
+                    cx.set_source_rgb(1, 0, 0)
 
+                cell = self.game_state.grid[y][x]
                 if cell == Cell.O:
                     cx.move_to(rx + CELL_SIZE - CELL_SIZE * 0.15, ry + CELL_SIZE / 2)
                     cx.arc(rx + CELL_SIZE / 2, ry + CELL_SIZE / 2, CELL_SIZE * 0.35, 0, math.pi * 2)
