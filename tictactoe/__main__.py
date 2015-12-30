@@ -67,6 +67,7 @@ class GameState(object):
         self.status = GameStatus.ACTIVE
         self.winning_player = None
         self.winning_cells = None
+        self.symbols_placed = 0
         self.grid = [[Cell.EMPTY for _ in range(width)] for _ in range(height)]
 
     @classmethod
@@ -74,12 +75,20 @@ class GameState(object):
         return cls(DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
     def place_symbol(self, gx, gy):
+        self.symbols_placed += 1
         self.grid[gy][gx] = self.current_player.get_cell()
+
         winner, cells = self.calculate_winner()
         if winner is not None:
             self.status = GameStatus.GAME_OVER
             self.winning_player = winner
             self.winning_cells = cells
+            return
+
+        if self.symbols_placed == self.width * self.height:
+            self.status = GameStatus.GAME_OVER
+            return
+
         self.change_player()
 
     def change_player(self):
@@ -197,7 +206,10 @@ class TicTacToeWindow(Gtk.Window):
         if self.game_state.status == GameStatus.ACTIVE:
             message = "Current player: {current_player}".format(current_player=self.game_state.current_player)
         elif self.game_state.status == GameStatus.GAME_OVER:
-            message = "Player {winner} has won!".format(winner=self.game_state.winning_player)
+            if self.game_state.winning_player is not None:
+                message = "Game over! Player {winner} has won!".format(winner=self.game_state.winning_player)
+            else:
+                message = "Game over! Neither player won!"
         self.statusbar.pop(self.statusbar_context_id)
         self.statusbar.push(self.statusbar_context_id, message)
 
