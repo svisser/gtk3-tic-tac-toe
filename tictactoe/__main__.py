@@ -13,6 +13,7 @@ MENU_DESCRIPTION = """
 <ui>
     <menubar name='MenuBar'>
         <menu action='FileMenu'>
+            <menuitem action='FileNew' />
             <menuitem action='FileQuit' />
         </menu>
     </menubar>
@@ -20,6 +21,8 @@ MENU_DESCRIPTION = """
 """
 
 CELL_SIZE = 100
+DEFAULT_WIDTH = 3
+DEFAULT_HEIGHT = 3
 GRID_OFFSET_X = 5
 GRID_OFFSET_Y = 5
 
@@ -53,6 +56,10 @@ class GameState(object):
         self.winning_player = None
         self.winning_cells = None
         self.grid = [[Cell.EMPTY for _ in range(width)] for _ in range(height)]
+
+    @classmethod
+    def get_initial_state(cls):
+        return cls(DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
     def place_symbol(self, gx, gy):
         self.grid[gy][gx] = {
@@ -126,6 +133,10 @@ class TicTacToeWindow(Gtk.Window):
         action_filemenu = Gtk.Action("FileMenu", "File", None, None)
         action_group.add_action(action_filemenu)
 
+        action_filenew = Gtk.Action("FileNew", None, None, Gtk.STOCK_NEW)
+        action_filenew.connect("activate", self.on_menu_file_new)
+        action_group.add_action(action_filenew)
+
         action_filequit = Gtk.Action("FileQuit", None, None, Gtk.STOCK_QUIT)
         action_filequit.connect("activate", self.on_menu_file_quit)
         action_group.add_action(action_filequit)
@@ -176,8 +187,7 @@ class TicTacToeWindow(Gtk.Window):
             gx, gy = self.get_grid_coordinates(event.x, event.y)
             if gx is not None and gy is not None and self.game_state.grid[gy][gx] == Cell.EMPTY:
                 self.game_state.place_symbol(gx, gy)
-                self.queue_draw()
-                self.calculate_statusbar_message()
+                self.on_game_state_change()
         return False
 
     def calculate_statusbar_message(self):
@@ -188,11 +198,19 @@ class TicTacToeWindow(Gtk.Window):
         self.statusbar.pop(self.statusbar_context_id)
         self.statusbar.push(self.statusbar_context_id, message)
 
+    def on_game_state_change(self):
+        self.drawing_area.queue_draw()
+        self.calculate_statusbar_message()
+
+    def on_menu_file_new(self, widget):
+        self.game_state = GameState.get_initial_state()
+        self.on_game_state_change()
+
     def on_menu_file_quit(self, widget):
         Gtk.main_quit()
 
 
-win = TicTacToeWindow(GameState(3, 3))
+win = TicTacToeWindow(GameState.get_initial_state())
 win.connect("delete-event", Gtk.main_quit)
 win.show_all()
 Gtk.main()
