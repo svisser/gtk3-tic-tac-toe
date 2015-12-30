@@ -59,3 +59,18 @@ You can then start the application using:
 .. code-block:: bash
 
     python -m tictactoe
+
+Development and testing
+-----------------------
+
+Install the requirements for development:
+
+.. code-block:: bash
+
+    $ pip install -r dev-requirements.txt
+
+Run the tests:
+
+.. code-block:: bash
+
+    $ py.test
