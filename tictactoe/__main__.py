@@ -37,6 +37,18 @@ class Player(enum.Enum):
     X = "X"
     O = "O"
 
+    def get_cell(self):
+        return {
+            Player.X: Cell.X,
+            Player.O: Cell.O,
+        }[self]
+
+    def get_opposite_player(self):
+        return {
+            Player.X: Player.O,
+            Player.O: Player.X,
+        }[self]
+
     def __str__(self):
         return str(self.value)
 
@@ -62,10 +74,7 @@ class GameState(object):
         return cls(DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
     def place_symbol(self, gx, gy):
-        self.grid[gy][gx] = {
-            Player.X: Cell.X,
-            Player.O: Cell.O,
-        }[self.current_player]
+        self.grid[gy][gx] = self.current_player.get_cell()
         winner, cells = self.calculate_winner()
         if winner is not None:
             self.status = GameStatus.GAME_OVER
@@ -74,10 +83,7 @@ class GameState(object):
         self.change_player()
 
     def change_player(self):
-        self.current_player = {
-            Player.X: Player.O,
-            Player.O: Player.X,
-        }[self.current_player]
+        self.current_player = self.current_player.get_opposite_player()
 
     def calculate_possibilities(self):
         for x in range(self.width):
