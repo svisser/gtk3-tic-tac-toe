@@ -89,9 +89,6 @@ class GameState(object):
             self.status = GameStatus.GAME_OVER
             return
 
-        self.change_player()
-
-    def change_player(self):
         self.current_player = self.current_player.get_opposite_player()
 
     def calculate_possibilities(self):
