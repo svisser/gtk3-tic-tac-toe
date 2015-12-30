@@ -125,17 +125,15 @@ class TicTacToeWindow(Gtk.Window):
         self.add_accel_group(uimanager.get_accel_group())
         uimanager.insert_action_group(action_group)
 
-        menubar = uimanager.get_widget("/MenuBar")
         self.drawing_area = self.get_drawing_area()
-        self.statusbar = Gtk.Statusbar()
-        self.statusbar_context_id = self.statusbar.get_context_id("default_context_id")
+
+        self.statusbar, self.statusbar_context_id = self.get_statusbar()
         self.calculate_statusbar_message()
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        box.pack_start(menubar, False, False, 0)
+        box.pack_start(uimanager.get_widget("/MenuBar"), False, False, 0)
         box.pack_start(self.drawing_area, True, True, 0)
         box.pack_start(self.statusbar, False, False, 0)
-
         self.add(box)
 
     def add_file_menu_actions(self, action_group):
@@ -156,6 +154,11 @@ class TicTacToeWindow(Gtk.Window):
         drawing_area.connect("button-press-event", self.on_drawing_area_button_press_event)
         drawing_area.set_events(drawing_area.get_events() | Gdk.EventMask.BUTTON_PRESS_MASK)
         return drawing_area
+
+    def get_statusbar(self):
+        statusbar = Gtk.Statusbar()
+        statusbar_context_id = statusbar.get_context_id("default_context_id")
+        return statusbar, statusbar_context_id
 
     def on_drawing_area_draw(self, widget, cx):
         cx.set_line_width(5)
