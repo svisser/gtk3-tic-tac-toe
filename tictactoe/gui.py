@@ -101,7 +101,7 @@ class TicTacToeWindow(Gtk.Window):
     def get_grid_coordinates(self, rx, ry):
         gx = math.floor((rx - GRID_OFFSET_X) / CELL_SIZE)
         gy = math.floor((ry - GRID_OFFSET_Y) / CELL_SIZE)
-        if 0 <= gx <= self.game_state.width and 0 <= gy <= self.game_state.height:
+        if 0 <= gx < self.game_state.width and 0 <= gy < self.game_state.height:
             return gx, gy
         return None, None
 
