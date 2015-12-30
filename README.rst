@@ -37,7 +37,7 @@ easier when you have virtualenvwrapper installed (https://pypi.python.org/pypi/v
 When creating the virtualenv for this project you need to:
 
 - specify the Python 3.5 interpreter for which you have installed the GObject Python bindings, and
-- ensure that the Python interpreter in the virtualenv has access to the Python packages installed for that Python interpreter:
+- ensure that the Python interpreter in the virtualenv has access to the Python packages installed for that system Python interpreter:
 
 .. code-block:: bash
 
