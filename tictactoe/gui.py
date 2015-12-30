@@ -10,6 +10,7 @@ MENU_DESCRIPTION = """
     <menubar name='MenuBar'>
         <menu action='FileMenu'>
             <menuitem action='FileNew' />
+            <separator />
             <menuitem action='FileQuit' />
         </menu>
     </menubar>
