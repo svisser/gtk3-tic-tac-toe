@@ -178,8 +178,8 @@ class TicTacToeWindow(Gtk.Window):
                 cx.set_source_rgb(*color)
 
                 if cell == Cell.O:
-                    cx.move_to(rx + CELL_SIZE - CELL_SIZE * 0.1, ry + CELL_SIZE / 2)
-                    cx.arc(rx + CELL_SIZE / 2, ry + CELL_SIZE / 2, CELL_SIZE * 0.4, 0, math.pi * 2)
+                    cx.move_to(rx + CELL_SIZE - CELL_SIZE * 0.15, ry + CELL_SIZE / 2)
+                    cx.arc(rx + CELL_SIZE / 2, ry + CELL_SIZE / 2, CELL_SIZE * 0.35, 0, math.pi * 2)
                 elif cell == Cell.X:
                     cx.move_to(rx + CELL_SIZE * 0.2, ry + CELL_SIZE * 0.2)
                     cx.rel_line_to(CELL_SIZE * 0.6, CELL_SIZE * 0.6)
