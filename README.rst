@@ -23,7 +23,9 @@ Install the necessary dependencies for this package:
 
 .. code-block:: bash
 
-    $ sudo port install gobject-introspection gtk3 py35-gobject3
+    $ sudo port install gtk3 gobject-introspection py35-gobject3
+
+This installs GTK+ 3, GObject Introspection and GObject bindings for Python 3.5.
 
 It is recommended that you create a virtualenv to install this Python project locally. This is
 easier when you have virtualenvwrapper installed (https://pypi.python.org/pypi/virtualenvwrapper/):
@@ -34,9 +36,8 @@ easier when you have virtualenvwrapper installed (https://pypi.python.org/pypi/v
 
 When creating the virtualenv for this project you need to:
 
-- specify the Python 3.5 interpreter for which you have installed the above dependencies, and
-- ensure that the Python interpreter in the virtualenv has access to the GObject bindings installed
-  for the system Python interpreter:
+- specify the Python 3.5 interpreter for which you have installed the GObject Python bindings, and
+- ensure that the Python interpreter in the virtualenv has access to the Python packages installed for that Python interpreter:
 
 .. code-block:: bash
 
