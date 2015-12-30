@@ -34,6 +34,9 @@ class Player(enum.Enum):
     X = "X"
     O = "O"
 
+    def __str__(self):
+        return str(self.value)
+
 
 class GameStatus(enum.Enum):
     ACTIVE = 0
@@ -94,7 +97,7 @@ class TicTacToeWindow(Gtk.Window):
     def __init__(self, game_state):
         super().__init__(title="Tic-tac-toe")
         self.set_default_size(CELL_SIZE * game_state.width + 20,
-                              CELL_SIZE * game_state.height + 40)
+                              CELL_SIZE * game_state.height + 65)
 
         self.game_state = game_state
 
@@ -108,10 +111,14 @@ class TicTacToeWindow(Gtk.Window):
 
         menubar = uimanager.get_widget("/MenuBar")
         self.drawing_area = self.get_drawing_area()
+        self.statusbar = Gtk.Statusbar()
+        self.statusbar_context_id = self.statusbar.get_context_id("default_context_id")
+        self.calculate_statusbar_message()
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         box.pack_start(menubar, False, False, 0)
         box.pack_start(self.drawing_area, True, True, 0)
+        box.pack_start(self.statusbar, False, False, 0)
 
         self.add(box)
 
@@ -170,7 +177,16 @@ class TicTacToeWindow(Gtk.Window):
             if gx is not None and gy is not None and self.game_state.grid[gy][gx] == Cell.EMPTY:
                 self.game_state.place_symbol(gx, gy)
                 self.queue_draw()
+                self.calculate_statusbar_message()
         return False
+
+    def calculate_statusbar_message(self):
+        if self.game_state.status == GameStatus.ACTIVE:
+            message = "Current player: {current_player}".format(current_player=self.game_state.current_player)
+        elif self.game_state.status == GameStatus.GAME_OVER:
+            message = "Player {winner} has won!".format(winner=self.game_state.winning_player)
+        self.statusbar.pop(self.statusbar_context_id)
+        self.statusbar.push(self.statusbar_context_id, message)
 
     def on_menu_file_quit(self, widget):
         Gtk.main_quit()
