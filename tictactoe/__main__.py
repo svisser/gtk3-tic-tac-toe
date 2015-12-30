@@ -111,7 +111,7 @@ class GameState(object):
 class TicTacToeWindow(Gtk.Window):
 
     def __init__(self, game_state):
-        super().__init__(title="Tic-tac-toe")
+        super().__init__(title="Tic Tac Toe")
         self.set_default_size(CELL_SIZE * game_state.width + GRID_OFFSET_X * 2,
                               CELL_SIZE * game_state.height + GRID_OFFSET_Y * 2 + 60)
 
