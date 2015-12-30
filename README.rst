@@ -19,7 +19,7 @@ Install the necessary packages for Python 3.5 using MacPorts (https://www.macpor
 
     $ sudo port install gobject-introspection gtk3 py35-gobject3
 
-When creating the virtualenv for this project make sure that you:
+When creating the virtualenv for this project you need to:
 
 - specify the Python 3.5 interpreter for which you have installed the above dependencies, and
 - ensure that the Python interpreter in the virtualenv has access to those Python packages:
@@ -35,7 +35,7 @@ Lastly, install XQuartz (http://www.xquartz.org) to run X.Org X Window System on
 How to run
 ----------
 
-You need to make sure XQuartz is running.
+You need to have XQuartz running.
 
 You can then start the application using:
 
