@@ -94,11 +94,8 @@ class GameState(object):
         yield frozenset((k, self.width - 1 - k) for k in range(self.width))
 
     def calculate_winner(self):
-        checks = (
-            (Player.X, Cell.X),
-            (Player.O, Cell.O),
-        )
-        for player, symbol in checks:
+        for player in Player:
+            symbol = player.get_cell()
             for cells in self.calculate_possibilities():
                 if all(self.grid[cy][cx] == symbol for cx, cy in cells):
                     return player, cells
