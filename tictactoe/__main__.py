@@ -209,7 +209,7 @@ class TicTacToeWindow(Gtk.Window):
             if self.game_state.winning_player is not None:
                 message = "Game over! Player {winner} has won!".format(winner=self.game_state.winning_player)
             else:
-                message = "Game over! Neither player won!"
+                message = "Game over! Neither player has won!"
         self.statusbar.pop(self.statusbar_context_id)
         self.statusbar.push(self.statusbar_context_id, message)
 
