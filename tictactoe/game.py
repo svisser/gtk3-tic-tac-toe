@@ -52,9 +52,12 @@ class GameState(object):
     def get_initial_state(cls):
         return cls(DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
-    def place_symbol(self, gx, gy):
+    def place_symbol(self, gx, gy, player=None):
+        if player is None:
+            player = self.current_player
+
         self.symbols_placed += 1
-        self.grid[gy][gx] = self.current_player.get_cell()
+        self.grid[gy][gx] = player.get_cell()
 
         winner, cells = self.calculate_winner()
         if winner is not None:
@@ -67,7 +70,7 @@ class GameState(object):
             self.status = GameStatus.GAME_OVER
             return
 
-        self.current_player = self.current_player.get_opposite_player()
+        self.current_player = player.get_opposite_player()
 
     def calculate_possibilities(self):
         for x in range(self.width):
