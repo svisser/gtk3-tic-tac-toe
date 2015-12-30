@@ -23,8 +23,8 @@ MENU_DESCRIPTION = """
 CELL_SIZE = 100
 DEFAULT_WIDTH = 3
 DEFAULT_HEIGHT = 3
-GRID_OFFSET_X = 5
-GRID_OFFSET_Y = 5
+GRID_OFFSET_X = 10
+GRID_OFFSET_Y = 10
 
 
 class Cell(enum.Enum):
@@ -115,8 +115,8 @@ class TicTacToeWindow(Gtk.Window):
 
     def __init__(self, game_state):
         super().__init__(title="Tic-tac-toe")
-        self.set_default_size(CELL_SIZE * game_state.width + 20,
-                              CELL_SIZE * game_state.height + 65)
+        self.set_default_size(CELL_SIZE * game_state.width + GRID_OFFSET_X * 2,
+                              CELL_SIZE * game_state.height + GRID_OFFSET_Y * 2 + 60)
 
         self.game_state = game_state
 
